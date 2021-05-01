@@ -6,23 +6,23 @@
 
 // the setup function runs once when you press reset or power the board
 
-int inputRPM;
-const int fanPIN = PA1;
-
-int outputRPM() {
-	return (inputRPM) / 2400 * 65535;
-}
+const int PWMPIN = PA0;
+const int SENSEPIN = PA1;
+const int VOLTAGEPIN = PA2;
 
 void setup() {
 	Serial.begin(9600);
-	pinMode(fanPIN, OUTPUT);
-
+	pinMode(PWMPIN, OUTPUT);
+	pinMode(SENSEPIN, INPUT);
+	pinMode(VOLTAGEPIN, INPUT_ANALOG);
 }
 
 // the loop function runs over and over again until power down or reset
 void loop() {
 	if (Serial) {
-		inputRPM = Serial.read();
-		pwmWrite(fanPIN, outputRPM());
+		pwmWrite(PWMPIN, Serial.read() / 2400 * 65535);
+		Serial.write(digitalRead(SENSEPIN));
 	}
+	else
+		pwmWrite(PWMPIN, analogRead(VOLTAGEPIN) * 16);
 }
