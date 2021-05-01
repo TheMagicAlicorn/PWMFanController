@@ -20,7 +20,7 @@ void setup() {
 // the loop function runs over and over again until power down or reset
 void loop() {
 	if (Serial) {
-		pwmWrite(PWMPIN, Serial.read() / 2400 * 65535);
+		pwmWrite(PWMPIN, Serial.read() / 2400 * 65536);
 		Serial.write(digitalRead(SENSEPIN));
 	}
 	else
